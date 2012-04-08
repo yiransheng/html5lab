@@ -1,0 +1,13 @@
+{
+    "name" : "Sample App", 
+
+    "description" : "This is a sample app", 
+
+
+    "config": {
+	"created" : "2012-04-08", 
+	"updated" : "2012-04-08", 
+	"tags"    : ["sample", "test"]
+    }
+
+}

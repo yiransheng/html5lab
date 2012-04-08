@@ -1,0 +1,19 @@
+{
+    "DefaultConfig": {
+	"intro"  : "readme",
+	"html"   : "index.html", 
+	"css"    : "style.css", 
+	"script" : "main.js", 
+	"thumb"  : "thumb.png",
+	"created": "", 
+	"updated": "",
+	"tags"   : []
+    }, 
+
+    "registered": [
+     
+        "sample"
+		    
+    ]
+
+}

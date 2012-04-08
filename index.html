@@ -2,211 +2,112 @@
 
 <html>
   <head>
-    <title>Twitter &hearts; Open Source</title>
+    <title>Yiran's Html5 Lab</title>
     <link rel="stylesheet" type="text/css" href="assets/reset.css">
     <link rel="stylesheet" type="text/css" href="assets/style.css">
+    <link rel="stylesheet" type="text/css" href="assets/prettify.css">
     <script type="text/javascript" src="assets/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" src="js/sheng.all.min.js"></script>
+    <script type="text/javascript" src="js/ui.js"></script>
     <script type="text/javascript" src="assets/strftime.js"></script>
+    <script type="text/javascript" src="assets/prettify.js"></script>
     <script type="text/javascript">
-    (function ($, undefined) {
+    $(document).ready(function() {
+	var url_strings = window.location.href.split("#"), 
+	    url_prefix = "",
+	    app = url_strings.length>1 ? url_strings[url_strings.length-1] : "", 
+	    app_src = url_prefix + app, 
+	    Config = null, main;
 
-      // Put custom repo URL's in this object, keyed by repo name.
-      /* var repoUrls = {
-        "bootstrap": "http://twitter.github.com/bootstrap/",
-        "finagle": "http://twitter.github.com/finagle/",
-        "hogan.js": "http://twitter.github.com/hogan.js/"
-      };
+        // quick fail
+	    if (!app) {alert(); return} 
 
-      function repoUrl(repo) {
-        return repoUrls[repo.name] || repo.html_url;
-      }
+	if (app_src.match(/[^//]+$/g)) {
+	    app_src += "/"  
+	};
+        // loading config
+	$.getJSON("index.json", function(res){
+	    Config = res.DefaultConfig;
+            $.getJSON(app_src+"config.json", function(res){
+	        Sheng.extend(Config, res);
+	        app = res.name || app;
+		$("#info-intro pre").html(res.description);
+		main(Config);
+	    });
+	});
+	// tab view
+	Sheng.create(Tab, {
+            el: "#atab"
+	}).init();
 
-      // Put custom repo descriptions in this object, keyed by repo name.
-      var repoDescriptions = {
-        "bootstrap": "An HTML, CSS, and JS toolkit designed to kickstart development of webapps and sites",
-        "naggati2": "A protocol builder for Netty using Scala 2.8"
-      };
 
-      function repoDescription(repo) {
-        return repoDescriptions[repo.name] || repo.description;
-      }
+        // loading content and readying the everything 
+	main = function(config) { 
+	    Sheng.create(Stage, {
+		el: "#stage", 
+		src: app_src
+	    }).init(config);
+	    $.get(app_src+config.html, function(data){
+	       $('#info-html').find("pre:first").text(data);   
+	    }, "text");
+	    $.get(app_src+config.script, function(data){
+		$('#info-js').find("pre:first").text(data);   
+	    }, "text");
+	    $("#info-css").get(app_src+config.css, function(data){
+	       $('#info-css').find("pre:first").text(data);   
+	    }, "text");
 
-      function addRecentlyUpdatedRepo(repo) {
-        var $item = $("<li>");
+	    $("pre").ajaxSuccess(function() {
+	        prettyPrint();
+	    });
+	};
 
-        var $name = $("<a>").attr("href", repo.html_url).text(repo.name);
-        $item.append($("<span>").addClass("name").append($name));
-
-        var $time = $("<a>").attr("href", repo.html_url + "/commits").text(strftime("%h %e, %Y", repo.pushed_at));
-        $item.append($("<span>").addClass("time").append($time));
-
-        $item.append('<span class="bullet">&sdot;</span>');
-
-        var $watchers = $("<a>").attr("href", repo.html_url + "/watchers").text(repo.watchers + " watchers");
-        $item.append($("<span>").addClass("watchers").append($watchers));
-
-        $item.append('<span class="bullet">&sdot;</span>');
-
-        var $forks = $("<a>").attr("href", repo.html_url + "/network").text(repo.forks + " forks");
-        $item.append($("<span>").addClass("forks").append($forks));
-
-        $item.appendTo("#recently-updated-repos");
-      }
-
-      function addRepo(repo) {
-        var $item = $("<li>").addClass("repo grid-1 " + (repo.language || '').toLowerCase());
-        var $link = $("<a>").attr("href", repoUrl(repo)).appendTo($item);
-        $link.append($("<h2>").text(repo.name));
-        $link.append($("<h3>").text(repo.language));
-        $link.append($("<p>").text(repoDescription(repo)));
-        $item.appendTo("#repos");
-      }
-
-      $.getJSON("https://api.github.com/orgs/twitter/repos?callback=?", function (result) {
-        var repos = result.data;
-
-        $(function () {
-          $("#num-repos").text(repos.length);
-
-          // Convert pushed_at to Date.
-          $.each(repos, function (i, repo) {
-            repo.pushed_at = new Date(repo.pushed_at);
-
-            var weekHalfLife  = 1.146 * Math.pow(10, -9);
-
-            var pushDelta    = (new Date) - Date.parse(repo.pushed_at);
-            var createdDelta = (new Date) - Date.parse(repo.created_at);
-
-            var weightForPush = 1;
-            var weightForWatchers = 1.314 * Math.pow(10, 7);
-
-            repo.hotness = weightForPush * Math.pow(Math.E, -1 * weekHalfLife * pushDelta);
-            repo.hotness += weightForWatchers * repo.watchers / createdDelta;
-          });
-
-          // Sort by highest # of watchers.
-          repos.sort(function (a, b) {
-            if (a.hotness < b.hotness) return 1;
-            if (b.hotness < a.hotness) return -1;
-            return 0;
-          });
-
-          $.each(repos, function (i, repo) {
-            addRepo(repo);
-          });
-
-          // Sort by most-recently pushed to.
-          repos.sort(function (a, b) {
-            if (a.pushed_at < b.pushed_at) return 1;
-            if (b.pushed_at < a.pushed_at) return -1;
-            return 0;
-          });
-
-          $.each(repos.slice(0, 3), function (i, repo) {
-            addRecentlyUpdatedRepo(repo);
-          });
-        });
-      });
-
-      $.getJSON("https://api.github.com/orgs/twitter/members?callback=?", function (result) {
-        var members = result.data;
-
-        $(function () {
-          $("#num-members").text(members.length);
-        });
-      });
-
-      function randomItem(array) {
-        return array[Math.floor(Math.random() * array.length)];
-      }
-
-      var $flyzone;
-
-      function flyzone() {
-        if (!$flyzone) {
-          $flyzone = $("<div>").attr("id", "flyzone").prependTo(document.body);
-        }
-
-        return $flyzone;
-      }
-
-      var sizes = ["smaller", "small", "medium", "large", "fat"];
-
-      var sizeDimensions = {
-        "smaller": 50,
-        "small": 80,
-        "medium": 130,
-        "large": 200,
-        "fat": 300
-      };
-
-      function randomOpacity(threshold) {
-        var opacity = Math.random();
-
-        while (opacity < threshold) {
-          opacity = Math.random();
-        }
-
-        return opacity;
-      }
-
-      function makeLarry(sizeName, speed) {
-        var size = sizeDimensions[sizeName];
-        var top = Math.floor((flyzone().height() - size) * Math.random());
-
-        var $img = $("<img>")
-          .addClass("larry size-" + sizeName)
-          .attr("src", "assets/larry.png")
-          .attr("width", size)
-          .attr("height", size)
-          .css({
-            position: "absolute",
-            opacity: randomOpacity(0.4),
-            top: top,
-            left: -size
-          });
-
-        $img.prependTo(flyzone());
-
-        var left = flyzone().width() + size;
-
-        $img.animate({left: left}, speed, function () {
-          $img.remove();
-          makeRandomLarry();
-        });
-
-        return $img;
-      }
-
-      function makeRandomLarry() {
-        var size = randomItem(sizes);
-        var speed = Math.floor(Math.random() * 20000) + 15000;
-        return makeLarry(size, speed);
-      }
-
-      $(function () {
-        $("#logo").click(function () {
-          makeRandomLarry();
-        });
-      });
-
-      var match = (/\blarry(=(\d+))?\b/i).exec(window.location.search);
-
-      if (match) {
-        var n = parseInt(match[2]) || 20;
-
-        $(function () {
-          for (var i = 0; i < n; ++i) {
-            setTimeout(makeRandomLarry, Math.random() * n * 500);
-          }
-        });
-      }
-
-    }*/)(jQuery);
+    });
     </script>
+
+    <!--[if gte IE 9]>
+    <style>
+	.grad-head, header, .grad-bar{
+	    filter: none;
+	}
+	</style>
+    <![endif]-->
   </head>
   <body>
-      <h1>Yiran's Lab</h1> 
-      <a href="/html5lab/sample/index.html">A test here.</a>
+      <header class="shadow">
+      <div class="wrapper">
+	  <h1>Yiran's Html5 Experiments</h1>
+	  <span></span><div class="nav"><a href="#">Home</a></div>
+	  <span></span><div class="nav"><a href="http://www.yiransheng.com">Blog</a></div>
+	  <span></span><div class="nav"><a href="http://github.com/yiransheng">Github</a></div>
+	  <span></span><div class="nav"><a href="http://www.yiransheng.com/about">About me</a></div>
+	  <span></span>
+      </div>
+      </header>
+      <div id="container">
+	  <div id="atab" class="info-tab round-corner-five shadow">
+	      <div class="sheng-ui-tabhead grad-head"> </div>
+	      <div class="sheng-ui-tab" name="Description">
+		  <div id="info-intro"><pre> </pre></div>
+		  </div>
+	      <div class="sheng-ui-tab" name="Html">
+		  <div id="info-html"><pre class="prettyprint"> </pre></div>
+		  </div>
+	      <div class="sheng-ui-tab" name="JavaScript">
+		  <div id="info-js"><pre class="prettyprint"> </pre></div>
+		  </div>
+	      <div class="sheng-ui-tab" name="CSS">
+		  <div id="info-css"><pre class="prettyprint"> </pre></div>
+		  </div>
+	  </div>
+	  <div id="stage" class="demo-stage round-corner-five shadow"> </div>
+      </div>
+      <div id="footer" class="shadow-inset">Site owned by <a href="http://www.yiransheng.com">Yiran Sheng</a>, powered by <a href="http://pages.github.com/">Github Pages</a></div>
+  </body>
+</html>
+      </div>
+  </body>
+</html>
+      </div>
   </body>
 </html>
