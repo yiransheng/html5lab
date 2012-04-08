@@ -75,6 +75,22 @@ padding: 0px 10px;
 min-width: 60px;
 text-align: center;
 }
+/* app browser */ 
+#browse{
+background: #fff;
+width: 60%;
+margin: 20px auto;
+}
+#browser li{
+padding: 5px 0;
+}
+#browser ul{
+padding: 2%;
+width: 100%;
+}
+#apps-featured li{
+font-weight: bold;
+}
 /* container */
 #container{
 width: 1200px;

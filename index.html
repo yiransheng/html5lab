@@ -17,31 +17,53 @@
 	    url_prefix = "",
 	    app = url_strings.length>1 ? url_strings[url_strings.length-1] : "", 
 	    app_src = url_prefix + app, 
-	    Config = null, main;
-
+	    Config = null, AppList = null, main, appView;
 
 	if (app_src.match(/[^//]+$/g)) {
 	    app_src += "/"  
 	};
-        // loading config
+        // loading necessary info
 	$.getJSON("index.json", function(res){
 	    Config = res.DefaultConfig;
+	    AppList = res.registered.length < 50 ? res.registered : res.registered.slice(0, 49);
             // quick fail
 	    if (!app){
 	        $("#browse").removeClass("hide");
 	        $("#container").addClass("hide");
+	        // tab view
+		window.appsTab = Sheng.create(Tab, {
+		    el : "#browse"
+		}).init();
+
+		window.appListView = Sheng.create(AppListView).init(AppList);
+		$("#apps-new").html(appListView.render());
+		$("#apps-featured").html(appListView.renderByTag("featured"));
+		$("#apps-bytag .tag-cloud").html(appListView.tagCloud());
+
+
+		$("#browse").find("span a").bind("click", function(e){
+		    e.preventDefault();
+		    var tag = $(this).attr("name");
+		    $('#apps-bytag .list').empty().html(appListView.renderByTag(tag)).find("span a")
+		        .bind("click", arguments.callee);
+		    appsTab.moveTo({ target: '#browse span[name="2"]' });
+		});
 	    } 
+	    appView();
+	});
+	appView = function() {
             $.getJSON(app_src+"config.json", function(res){
-	        Sheng.extend(Config, res);
-	        app = res.name || app;
+	        if (res.config) Sheng.extend(Config, res.config);
+	        $('title').text(res.name || app);
 		$("#info-intro pre").html(res.description);
 		main(Config);
 	    });
-	});
-	// tab view
-	Sheng.create(Tab, {
-            el: "#atab"
-	}).init();
+
+	    // tab view
+	    Sheng.create(Tab, {
+		el: "#atab"
+	    }).init();
+	};
 
 
         // loading content and readying the everything 
@@ -64,13 +86,14 @@
 	        prettyPrint();
 	    });
 	};
+	
 
     });
     </script>
 
     <!--[if gte IE 9]>
     <style>
-	.grad-head, header, .grad-bar{
+	.grad-head, header,.grad-bar{
 	    filter: none;
 	}
 	</style>
@@ -87,7 +110,27 @@
 	  <span></span>
       </div>
       </header>
-      <div id="browse" class="hide">
+      <div id="browse" class="hide shadow round-corner-five">
+	  <div class="sheng-ui-tabhead grad-head"> </div>
+	  <div id="template-applist" class="hide"> 
+	     <li>
+	       <a href="#sample" name="title">Sample app title.</a>
+	       Updated: <span name="date">2012-04-06 12:48pm</span>
+	       Tags: <span name="tags">sample, test</span>
+	     </li> 
+	  </div>
+	  <div class="sheng-ui-tab" name="New" id="apps-new">
+	       
+	       </div>
+	  <div class="sheng-ui-tab" name="Featured" id="apps-featured">
+	       
+	       </div>
+	  <div class="sheng-ui-tab" name="By Tag" id="apps-bytag">
+	       <span class="tag-cloud"> </span>
+	       <hr>
+	       <div class="list"> </div>
+
+	       </div>
 
       </div>
       <div id="container">
