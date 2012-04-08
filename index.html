@@ -19,8 +19,6 @@
 	    app_src = url_prefix + app, 
 	    Config = null, main;
 
-        // quick fail
-	    if (!app) {alert(); return} 
 
 	if (app_src.match(/[^//]+$/g)) {
 	    app_src += "/"  
@@ -28,6 +26,11 @@
         // loading config
 	$.getJSON("index.json", function(res){
 	    Config = res.DefaultConfig;
+            // quick fail
+	    if (!app){
+	        $("#browse").removeClass("hide");
+	        $("#container").addClass("hide");
+	    } 
             $.getJSON(app_src+"config.json", function(res){
 	        Sheng.extend(Config, res);
 	        app = res.name || app;
@@ -84,6 +87,9 @@
 	  <span></span>
       </div>
       </header>
+      <div id="browse" class="hide">
+
+      </div>
       <div id="container">
 	  <div id="atab" class="info-tab round-corner-five shadow">
 	      <div class="sheng-ui-tabhead grad-head"> </div>
