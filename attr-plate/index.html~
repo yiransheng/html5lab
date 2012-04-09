@@ -1,0 +1,42 @@
+ 
+<!DOCTYPE html> 
+<html>  
+  <head> 
+    <meta charset="utf-8" /> 
+    <title>HTML5 Demo</title> 
+    <script type="text/javascript" src="../assets/jquery-1.7.1.min.js"></script> 
+    <script type="text/javascript" src="geo.js"></script>
+    <script type="text/javascript" src="main.js"></script> 
+  </head> 
+ 
+<body style="background-color: #000;color: white;"> 
+<table style="width: 700px;border: 1px solid #444;padding: 0px;"> 
+  <tr> 
+     <td style="width: 300px;"><canvas id="canvas" width="300" height="300" style="border: 1px solid #222;background-color: #111;"></canvas></td> 
+     <td style="width: 380px;border-left: 2px solid #2e2f2f; background-color: #333; padding-left: 10px;"> 
+        <form> 
+          <p> 
+          <input type="button" id="start" value="Draw" /> 
+          </p> 
+          <p><input type='text' id="n1" value='A1'/> 
+          <input id="a1" type="range" step="0.01" min="0" max="1" value="0.25"/></p> 
+          <p><input type='text' id="n2" value='A2'/> 
+          <input id="a2" type="range" step="0.01" min="0" max="1" value="0.71"/></p> 
+          <p><input type='text' id="n3" value='A3'/> 
+          <input id="a3" type="range" step="0.01" min="0" max="1" value="0.47"/></p> 
+          <p><input type='text' id="n4" value='A4'/> 
+          <input id="a4" type="range" step="0.01" min="0" max="1" value="0.44"/></p> 
+          <p><input type='text' id="n5" value='A5'/> 
+          <input id="a5" type="range" step="0.01" min="0" max="1" value="0.00"/></p> 
+           <p><input type='text' id="n6" value='A5'/> 
+          <input id="a6" type="range" step="0.01" min="0" max="1" value="0.71"/></p> 
+           <p><input type='text' id="n7" value='A5'/> 
+          <input id="a7" type="range" step="0.01" min="0" max="1" value="0.00"/></p> 
+             <p><input type='text' id="n8" value='A5'/> 
+          <input id="a8" type="range" step="0.01" min="0" max="1" value="0.38"/></p>  
+        </form> 
+     <td> 
+   </tr> 
+</table> 
+</body> 
+</html> 
