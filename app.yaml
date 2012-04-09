@@ -22,6 +22,10 @@ handlers:
 - url: /animated-logo
   static_dir: animated-logo
 
+- url: /admin
+  static_files: admin.html
+  upload: admin.html
+
 - url: /js
   static_dir: js
 

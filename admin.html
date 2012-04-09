@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title>Yiran's Html5 Lab</title>
+    <link rel="stylesheet" type="text/css" href="assets/reset.css">
+    <link rel="stylesheet" type="text/css" href="assets/style.css">
+    <link rel="stylesheet" type="text/css" href="assets/prettify.css">
+    <script type="text/javascript" src="assets/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" src="assets/jquery.address.min.js"></script>
+    <script type="text/javascript" src="js/sheng.all.min.js"></script>
+    <script type="text/javascript" src="js/ui.js"></script>
+    <script type="text/javascript" src="assets/strftime.js"></script>
+    <script type="text/javascript" src="assets/prettify.js"></script>
+    <script type="text/javascript">
+    $.fn.Serialize = function()
+    {
+	var o = {};
+	var a = this.serializeArray();
+	$.each(a, function() {
+	    if (o[this.name] !== undefined) {
+		if (!o[this.name].push) {
+		    o[this.name] = [o[this.name]];
+		}
+		o[this.name].push(this.value || '');
+	    } else {
+		o[this.name] = this.value || '';
+	    }
+	});
+	return o;
+    };
+
+    $(document).ready(function() {
+	
+	window.myTab = Sheng.create(Tab, {
+	    el: "#browse"    
+	}).init();	
+	$.getJSON("index.json", function(res){
+	    window.index_json = res;    
+	    window.index_json.registered.unshift({});
+	    $("#output-index").val(JSON.stringify(res))
+	});
+	var collect, now = new Date();
+	now = strftime('%Y-%m-%d', now);
+	$('[name="created_at"]').val(now);
+	$('[name="updated_at"]').val(now);
+	collect = function(){
+	    var data = $("form#config").Serialize(), 
+	        config = $("form#config-config").Serialize();
+	    if (!(data.name && data.place)) return;
+	    data.tags = data.tags.split(",");
+	    if (config.thumb != "thumb.png") data.config = config;
+	    $("#output-app").val(JSON.stringify(data));    
+            delete data.description;
+	    if (window.index_json) {
+		window.index_json.registered[0] = data; 
+	        $("#output-index").val(JSON.stringify(window.index_json))
+	    }
+	};
+	$('[name="1"]').click(collect);
+	$('[name="2"]').click(collect);
+    });
+    </script>
+
+    <!--[if gte IE 9]>
+    <style>
+	.grad-head, header,.grad-bar{
+	    filter: none;
+	}
+	</style>
+    <![endif]-->
+  </head>
+  <body>
+      <header class="shadow">
+      <div class="wrapper">
+	  <h1>Yiran's Html5 Experiments</h1>
+	  <span></span><div class="nav"><a href="http://yiransheng.github.com/html5lab/">Home</a></div>
+	  <span></span><div class="nav"><a href="http://www.yiransheng.com">Blog</a></div>
+	  <span></span><div class="nav"><a href="http://github.com/yiransheng">Github</a></div>
+	  <span></span><div class="nav"><a href="http://www.yiransheng.com/about">About me</a></div>
+	  <span></span>
+      </div>
+      </header>
+      <div id="browse" class="shadow round-corner-five">
+	  <div class="sheng-ui-tabhead grad-head"> </div>
+
+	  <div class="sheng-ui-tab" name="Input" id="app-input">
+	      <form id="config">
+		  <p><b>* Name:</b><input name="name" class="shadow-inset"/> </p>
+		  <p><b>* Place:</b><input name="place" class="shadow-inset"/> </p>
+		  <p><b>Add Tags:</b><input name="tags" class="shadow-inset"/> </p>
+		  <br>
+		  <p><textarea name="description" class="shadow-inset round-corner-five" placeholder="Type in description here."></textarea></p>
+		  <input type="hidden" value="" name="created_at">
+		  <input type="hidden" value="" name="updated_at">
+		  </form>
+		  <br>
+	      <form id="config-config">
+		  <p><b>Thumbnail image: </b><input name="thumb" value="thumb.png"/>
+		  </form>
+	       
+	       </div>
+	  <div class="sheng-ui-tab" name="Output:index.json" id="index-jsonout">
+	      Copy the following into "index.json".
+	      <textarea id="output-index">
+
+	      </textarea>
+	       </div>
+	  <div class="sheng-ui-tab" name="Output:config.json" id="app-jsonout">
+	      Copy the following into "config.json"
+	      <textarea id="output-app">
+
+	      </textarea>
+	       </div>
+      </div>
+      <div id="footer" class="shadow-inset">Site owned by <a href="http://www.yiransheng.com">Yiran Sheng</a>, powered by <a href="http://pages.github.com/">Github Pages</a>. App routing enabled by <a href="https://github.com/asual/jquery-address">jQuery.address</a></div>
+  </body>
+</html>
+      </div>
+  </body>
+</html>
+      </div>
+  </body>
+</html>

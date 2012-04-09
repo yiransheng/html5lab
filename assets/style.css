@@ -88,6 +88,26 @@ padding: 5px 0;
 padding: 2%;
 width: 100%;
 }
+#browse input{
+width: 400px;
+border: none;
+outline: none;
+border: 1px solid #888;
+}
+#browse form b{
+width: 100px;
+display: inline-block;
+*display: inline;
+font-weight: bold;
+}
+#browse textarea{
+width: 100%;
+height: 100%;
+border: none;
+outline: none;
+min-height: 300px;
+border: 1px solid #888;
+}
 #apps-featured li{
 font-weight: bold;
 }
@@ -121,10 +141,9 @@ width: 500px;
 border: 1px solid #1b2e66;
 margin: 25px;
 overflow: auto;
-min-height: 500px;
+height: 500px;
 position: relative;
 background: #fff;
-max-height: 800px;
 }
 .demo-stage{
 height: 500px;
