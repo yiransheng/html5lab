@@ -100,7 +100,7 @@
 	});
 
 	$.address.change(function(e){
-	    var route = e.value.replace("/", "");
+	    var route = e.value.replace(/^\/+|\/+$/g, "");
 	    if (route){
 	        app_src = route+"/";
 	        appHandler();
