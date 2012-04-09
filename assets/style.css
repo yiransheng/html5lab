@@ -40,7 +40,8 @@ line-height: 0;
 .fixed-size{
 display: block;
 width: 100%;
-height: 100%;
+height: 465px;
+margin: auto;
 overflow: auto;
 }
 /* header */
