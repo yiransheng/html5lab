@@ -7,14 +7,15 @@
     <link rel="stylesheet" type="text/css" href="assets/style.css">
     <link rel="stylesheet" type="text/css" href="assets/prettify.css">
     <script type="text/javascript" src="assets/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" src="assets/jquery.address.min.js"></script>
     <script type="text/javascript" src="js/sheng.all.min.js"></script>
     <script type="text/javascript" src="js/ui.js"></script>
     <script type="text/javascript" src="assets/strftime.js"></script>
     <script type="text/javascript" src="assets/prettify.js"></script>
     <script type="text/javascript">
     $(document).ready(function() {
-	var url_strings = window.location.href.split("#"), 
-	    url_prefix = "",
+	var url_strings = window.location.href.split("#/"), 
+	    url_prefix = "", appsTab, appTab, stage,  
 	    app = url_strings.length>1 ? url_strings[url_strings.length-1] : "", 
 	    app_src = url_prefix + app, 
 	    Config = null, AppList = null, main, appView;
@@ -22,36 +23,37 @@
 	if (app_src.match(/[^//]+$/g)) {
 	    app_src += "/"  
 	};
-        // loading necessary info
-	$.getJSON("index.json", function(res){
-	    Config = res.DefaultConfig;
-	    AppList = res.registered.length < 50 ? res.registered : res.registered.slice(0, 49);
-            // quick fail
-	    if (!app){
-	        $("#browse").removeClass("hide");
-	        $("#container").addClass("hide");
-	        // tab view
-		window.appsTab = Sheng.create(Tab, {
-		    el : "#browse"
-		}).init();
-
-		window.appListView = Sheng.create(AppListView).init(AppList);
-		$("#apps-new").html(appListView.render());
-		$("#apps-featured").html(appListView.renderByTag("featured"));
-		$("#apps-bytag .tag-cloud").html(appListView.tagCloud());
 
 
-		$("#browse").find("span a").bind("click", function(e){
-		    e.preventDefault();
-		    var tag = $(this).attr("name");
-		    $('#apps-bytag .list').empty().html(appListView.renderByTag(tag)).find("span a")
-		        .bind("click", arguments.callee);
-		    appsTab.moveTo({ target: '#browse span[name="2"]' });
-		});
-	    } 
-	    appView();
-	});
-	appView = function() {
+	listHandler = function() {
+	    $("#browse").removeClass("hide");
+	    $("#container").addClass("hide");
+	    // tab view
+	    window.appsTab = window.appsTab || Sheng.create(Tab, {
+		el : "#browse"
+	    }).init();
+
+	    window.appListView = Sheng.create(AppListView).init(AppList);
+	    $("#apps-new").html(appListView.render());
+	    $("#apps-featured").html(appListView.renderByTag("featured"));
+	    $("#apps-bytag .tag-cloud").html(appListView.tagCloud());
+
+
+	    $("#browse").find("span a").bind("click", function(e){
+		e.preventDefault();
+		var tag = $(this).attr("name");
+		$('#apps-bytag .list').empty().html(appListView.renderByTag(tag)).find("span a")
+		    .bind("click", arguments.callee);
+		window.appsTab.moveTo({ target: '#browse span[name="2"]' });
+	    });
+
+	    $("#browse").find('a[name="title"]').address();
+
+	};
+	appHandler = function() {
+
+	    $("#browse").addClass("hide");
+	    $("#container").removeClass("hide");
             $.getJSON(app_src+"config.json", function(res){
 	        if (res.config) Sheng.extend(Config, res.config);
 	        $('title').text(res.name || app);
@@ -60,7 +62,7 @@
 	    });
 
 	    // tab view
-	    Sheng.create(Tab, {
+	    window.appTab = window.appTab || Sheng.create(Tab, {
 		el: "#atab"
 	    }).init();
 	};
@@ -68,10 +70,7 @@
 
         // loading content and readying the everything 
 	main = function(config) { 
-	    Sheng.create(Stage, {
-		el: "#stage", 
-		src: app_src
-	    }).init(config);
+            stage.trigger("change", app_src, config);
 	    $.get(app_src+config.html, function(data){
 	       $('#info-html').find("pre:first").text(data);   
 	    }, "text");
@@ -86,7 +85,40 @@
 	        prettyPrint();
 	    });
 	};
-	
+
+	stage = window.stage = stage || Sheng.create(Stage, {
+	    el: "#stage", 
+	    src: app_src
+	});
+
+	Sheng.extend(window.stage, Sheng.events);
+	stage.bind("change", function(app_src, config){
+	    $(stage.el).empty();
+	    stage.src = app_src;
+	    stage.init(config || {});
+	});
+
+	$.address.change(function(e){
+	    var route = e.value.replace("/", "");
+	    if (route){
+	        app_src = route+"/";
+	        appHandler();
+	    } else {
+	        listHandler();
+	    }
+	});
+
+	$.getJSON("index.json", function(res){
+	    Config = res.DefaultConfig;
+	    AppList = res.registered.length < 50 ? res.registered : res.registered.slice(0, 49);
+            // fail loading an app
+	    if (!app){
+	        listHandler();
+	    } else { 
+	        appHandler();
+	    }
+	});
+
 
     });
     </script>
@@ -103,7 +135,7 @@
       <header class="shadow">
       <div class="wrapper">
 	  <h1>Yiran's Html5 Experiments</h1>
-	  <span></span><div class="nav"><a href="#">Home</a></div>
+	  <span></span><div class="nav"><a href="http://yiransheng.github.com/html5lab/">Home</a></div>
 	  <span></span><div class="nav"><a href="http://www.yiransheng.com">Blog</a></div>
 	  <span></span><div class="nav"><a href="http://github.com/yiransheng">Github</a></div>
 	  <span></span><div class="nav"><a href="http://www.yiransheng.com/about">About me</a></div>
@@ -151,7 +183,7 @@
 	  </div>
 	  <div id="stage" class="demo-stage round-corner-five shadow"> </div>
       </div>
-      <div id="footer" class="shadow-inset">Site owned by <a href="http://www.yiransheng.com">Yiran Sheng</a>, powered by <a href="http://pages.github.com/">Github Pages</a></div>
+      <div id="footer" class="shadow-inset">Site owned by <a href="http://www.yiransheng.com">Yiran Sheng</a>, powered by <a href="http://pages.github.com/">Github Pages</a>. App routing enabled by <a href="https://github.com/asual/jquery-address">jQuery.address</a></div>
   </body>
 </html>
       </div>
