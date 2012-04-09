@@ -1,0 +1,20 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <title>Demo Page</title>
+
+  <!-- include source files here... -->
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+  <script type="text/javascript" src="https://raw.github.com/yiransheng/Sheng.js/master/sheng.all.min.js"></script>
+  <script src="main.js"></script>
+<style></style>
+</head>
+
+<body>
+<p>Click logo to start/pause</p>
+<p>link:<a href="http://lab.yiransheng.com/html5/2012-04/sheng-js-demo">http://lab.yiransheng.com/html5/2012-04/sheng-js-demo</a>. <a href="http://lab.yiransheng.com/html5/2012-04/sheng-js-demo/src">Source Code</a></p>
+<p>This is a simple demo of using Sheng.js, see it on <a href="https://github.com/yiransheng/Sheng.js">Github</a></p>
+<canvas id="stage" style=";width:270px;height:247px;display:block;position:fixed;z-index:65525; top:200px; left:20px;">
+</canvas>
+</body>
+</html>
