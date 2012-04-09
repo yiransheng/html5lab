@@ -58,7 +58,7 @@
             $.getJSON(app_src+"config.json", function(res){
 	        if (res.config) Sheng.extend(Config, res.config);
 	        $('title').text(res.name || app);
-		$("#info-intro pre").html(res.description);
+		$("#info-intro p").html(res.description);
 		main(Config);
 	    });
 
@@ -73,7 +73,7 @@
 	main = function(config) { 
             stage.trigger("change", app_src, config);
 	    $.get(app_src+config.html, function(data){
-	       $('#info-html').find("p:first").text(data);   
+	       $('#info-html').find("pre:first").text(data);   
 	    }, "text");
 	    $.get(app_src+config.script, function(data){
 		$('#info-js').find("pre:first").text(data);   
