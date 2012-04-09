@@ -73,7 +73,7 @@
 	main = function(config) { 
             stage.trigger("change", app_src, config);
 	    $.get(app_src+config.html, function(data){
-	       $('#info-html').find("pre:first").text(data);   
+	       $('#info-html').find("p:first").text(data);   
 	    }, "text");
 	    $.get(app_src+config.script, function(data){
 		$('#info-js').find("pre:first").text(data);   
@@ -170,7 +170,7 @@
 	  <div id="atab" class="info-tab round-corner-five shadow">
 	      <div class="sheng-ui-tabhead grad-head"> </div>
 	      <div class="sheng-ui-tab" name="Description">
-		  <div id="info-intro"><pre> </pre></div>
+		  <div id="info-intro"><p> </p></div>
 		  </div>
 	      <div class="sheng-ui-tab" name="Html">
 		  <div id="info-html"><pre class="prettyprint"> </pre></div>
