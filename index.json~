@@ -18,26 +18,17 @@
 	    "tags"       : ["sample", "test"]
 	},  
         {
-	    "name"       : "Sample App2", 
-	    "place"      : "sample", 
-	    "created_at" : "2012-04-01", 
-	    "updated_at" : "2012-04-01", 
-	    "tags"       : ["sample", "test", "featured"]
-	},  
-        {
-	    "name"       : "Sample App3", 
-	    "place"      : "sample", 
-	    "created_at" : "2012-04-08", 
-	    "updated_at" : "2012-04-08", 
-	    "tags"       : ["sample", "test", "featured"]
-	},  
-        {
-	    "name"       : "Sample App4", 
-	    "place"      : "sample", 
-	    "created_at" : "2012-04-08", 
-	    "updated_at" : "2012-04-08", 
-	    "tags"       : ["sample", "test"]
-	} 
+            "name"    : "Animated Logo (Particlize)", 
+
+            "place"   : "animated-logo", 
+
+            "tags"    : ["canvas", "particle"], 
+
+            "created_at" : "2012-04-06", 
+
+            "updated_at" : "2012-04-06" 
+
+        } 
 
 		    
     ]
