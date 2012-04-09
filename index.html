@@ -33,6 +33,7 @@
 		el : "#browse"
 	    }).init();
 
+	    if (window.appListView.items) return;
 	    window.appListView = Sheng.create(AppListView).init(AppList);
 	    $("#apps-new").html(appListView.render());
 	    $("#apps-featured").html(appListView.renderByTag("featured"));
@@ -110,7 +111,7 @@
 
 	$.getJSON("index.json", function(res){
 	    Config = res.DefaultConfig;
-	    AppList = res.registered.length < 50 ? res.registered : res.registered.slice(0, 49);
+	    AppList = res.registered.slice(0, 49);
             // fail loading an app
 	    if (!app){
 	        listHandler();
