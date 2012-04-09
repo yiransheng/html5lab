@@ -33,7 +33,7 @@
 		el : "#browse"
 	    }).init();
 
-	    if (window.appListView.items) return;
+	    if (window.appListView) return;
 	    window.appListView = Sheng.create(AppListView).init(AppList);
 	    $("#apps-new").html(appListView.render());
 	    $("#apps-featured").html(appListView.renderByTag("featured"));
