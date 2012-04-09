@@ -48,6 +48,7 @@
 	    var data = $("form#config").Serialize(), 
 	        config = $("form#config-config").Serialize();
 	    if (!(data.name && data.place)) return;
+	    data.tags = data.tags.replace(/\s+/g, '');
 	    data.tags = data.tags.split(",");
 	    if (config.thumb != "thumb.png") data.config = config;
 	    $("#output-app").val(JSON.stringify(data));    
