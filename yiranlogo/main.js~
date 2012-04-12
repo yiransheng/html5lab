@@ -23,7 +23,7 @@ $(IMG).bind("load", function() {
       $("#stage-wrapper").css({
           position: "absolute", 
 	  top: "29px", 
-	  left: "93px", 
+	  left: "-150px", 
       });
       canvas.css({
 	  display: "none",

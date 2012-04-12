@@ -131,7 +131,7 @@ $(IMG).bind("load", function() {
 	      // }
 	//  }
       }
-      $("#stage-wrapper").bind("mouseover", function(e){
+      $("#header").bind("mouseover", function(e){
           e.preventDefault();
 	  var el = canvas || $("#stage");
 	  if ( !el.is(":animated") ) {
@@ -142,7 +142,7 @@ $(IMG).bind("load", function() {
 	      el.show();
 	  }
       });
-      $("#stage-wrapper").bind("mouseout", function(e){
+      $("#header").bind("mouseout", function(e){
           e.preventDefault();
 	  var el = canvas || $("#stage");
 	  if ( !el.is(":animated") ){
