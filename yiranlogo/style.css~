@@ -1,6 +1,6 @@
 
 #header{
-width: 100%;
+width: 933px;
 height: 252px;
 background: url(hdr2.jpg) no-repeat;
 border-bottom: 10px solid #111;

@@ -1,8 +1,8 @@
 
 #header{
-width: 933px;
+width: 450px;
 height: 252px;
-background: url(hdr2.jpg) no-repeat;
+background: url(hdr2.jpg) no-repeat -241px 0px;
 border-bottom: 10px solid #111;
 position: relative;
 z-index: 0;
