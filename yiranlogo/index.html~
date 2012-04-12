@@ -12,7 +12,7 @@
 <body>
     <div id='header'>
 	<div id="stage-wrapper">
-	        <img id="logo" src="{{ url_for('static', filename='thumb.png')}}"/>
+	        <img id="logo" src="thumb.png"/>
 		<a href="/"><canvas id="stage">
 		    </canvas></a>
 	</div>
