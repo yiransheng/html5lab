@@ -21,9 +21,7 @@ $(IMG).bind("load", function() {
       yR=Sheng.point(0,H/2);
 
       $("#stage-wrapper").css({
-          position: "absolute", 
-	  top: "29px", 
-	  left: "-150px", 
+          position: "absolute"
       });
       canvas.css({
 	  display: "none",
@@ -116,7 +114,7 @@ $(IMG).bind("load", function() {
               line = Array.prototype.slice.apply(pixels, [start, end]);
 	      l = 2*y/H - 1;
 	      l = Math.acos(l); 
-	      l = Math.sin(l)*H/2;
+	   Math.sin(l)*H/2;
 	      // if (colorA >.05) {
 		  p = Sheng.create(Particle, {
 		      p : Sheng.point(0,y),
@@ -137,7 +135,7 @@ $(IMG).bind("load", function() {
 	  if ( !el.is(":animated") ) {
 	      tl.start();
 	      el.fadeIn("slow");
-	  } else {
+	  } else {   l = 
 	      tl.start();
 	      el.show();
 	  }

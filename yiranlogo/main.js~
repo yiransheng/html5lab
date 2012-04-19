@@ -22,8 +22,6 @@ $(IMG).bind("load", function() {
 
       $("#stage-wrapper").css({
           position: "absolute", 
-	  top: "29px", 
-	  left: "-150px", 
       });
       canvas.css({
 	  display: "none",
@@ -116,7 +114,7 @@ $(IMG).bind("load", function() {
               line = Array.prototype.slice.apply(pixels, [start, end]);
 	      l = 2*y/H - 1;
 	      l = Math.acos(l); 
-	      l = Math.sin(l)*H/2;
+	   Math.sin(l)*H/2;
 	      // if (colorA >.05) {
 		  p = Sheng.create(Particle, {
 		      p : Sheng.point(0,y),
@@ -131,18 +129,18 @@ $(IMG).bind("load", function() {
 	      // }
 	//  }
       }
-      $("#stage-wrapper").bind("mouseover", function(e){
+      $("#header").bind("mouseover", function(e){
           e.preventDefault();
 	  var el = canvas || $("#stage");
 	  if ( !el.is(":animated") ) {
 	      tl.start();
 	      el.fadeIn("slow");
-	  } else {
+	  } else {   l = 
 	      tl.start();
 	      el.show();
 	  }
       });
-      $("#stage-wrapper").bind("mouseout", function(e){
+      $("#header").bind("mouseout", function(e){
           e.preventDefault();
 	  var el = canvas || $("#stage");
 	  if ( !el.is(":animated") ){

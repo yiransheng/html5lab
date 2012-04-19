@@ -13,8 +13,8 @@ position: absolute;
 display: block;
 width: 420px;
 height: 220px;
-left: 0;
-top: 0;
+top: "29px";
+left: "150px"; 
 z-index: 65533;
 }
 #stage{
