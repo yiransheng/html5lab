@@ -129,27 +129,15 @@ $(IMG).bind("load", function() {
 	      // }
 	//  }
       }
-      $("#header").bind("mouseover", function(e){
+      $("#header").bind("click", function(e){
           e.preventDefault();
 	  var el = canvas || $("#stage");
 	  if ( !el.is(":animated") ) {
-	      tl.start();
-	      el.fadeIn("slow");
-	  } else {   l = 
-	      tl.start();
-	      el.show();
-	  }
-      });
-      $("#header").bind("mouseout", function(e){
-          e.preventDefault();
-	  var el = canvas || $("#stage");
-	  if ( !el.is(":animated") ){
-	      el.fadeOut("slow", function() {
-	          tl.stop();
-	      });
-	  } else {
-	      tl.stop();
-              el.hide();
+	      tl.toggle();
+		  el.fadeIn();
+	  } else {  
+	      tl.toggle();
+	      el.fadeOut("fast");
 	  }
       });
 });
