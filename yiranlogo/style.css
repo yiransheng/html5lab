@@ -13,15 +13,17 @@ position: absolute;
 display: block;
 width: 420px;
 height: 220px;
-top: "29px";
-left: "150px"; 
+top: 29px;
+left: 150px; 
 z-index: 65533;
 }
 #stage{
 z-index: 65535;
 }
 #logo{
-position: relative;
+position: fixed;
+top: -999px;
+left: -999px;
 z-index: -65535;
 visibility: hidden;
 }
