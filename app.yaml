@@ -19,8 +19,8 @@ handlers:
 - url: /sample
   static_dir: sample
 
-- url: /animated-logo
-  static_dir: animated-logo
+- url: /yiranlogo
+  static_dir: yiranlogo
 
 - url: /admin
   static_files: admin.html

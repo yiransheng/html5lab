@@ -114,7 +114,7 @@ $(IMG).bind("load", function() {
               line = Array.prototype.slice.apply(pixels, [start, end]);
 	      l = 2*y/H - 1;
 	      l = Math.acos(l); 
-	   Math.sin(l)*H/2;
+	      l = Math.sin(l)*H/2;
 	      // if (colorA >.05) {
 		  p = Sheng.create(Particle, {
 		      p : Sheng.point(0,y),
